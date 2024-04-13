@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 
 const { WebCache, VersionResolveError } = require('./WebCache');
+const { v4: uuidv4 } = require('uuid');
 
 /**
  * LocalWebCache - Fetches a WhatsApp Web version from a local file store
@@ -30,9 +31,7 @@ class LocalWebCache extends WebCache {
     }
 
     async persist(indexHtml) {
-        // extract version from index (e.g. manifest-2.2206.9.json -> 2.2206.9)
-        const version = indexHtml.match(/manifest-([\d\\.]+)\.json/)[1];
-        if(!version) return;
+        const version = uuidv4();
    
         const filePath = path.join(this.path, `${version}.html`);
         fs.mkdirSync(this.path, { recursive: true });
